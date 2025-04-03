@@ -1,0 +1,16 @@
+- There will only ever be two users for the site: me and my partner
+- TPS stands for Trust, Pleasure, Safety and is a way to keep "Date Night" and "Cuddle Time ;)" off of the family smartfridge — a little inside joke to help keep the spark alive
+- The main asset for the site is a PDF document ("TPS 1.2 vanilla.pdf") that has been augmented with well-named form fields in Adobe Acrobat. The website we build should scrape these fields and store them in our DB whenever a user touches a TPS report in the app. Certain fields on the TPS report form will always be there (like Date, Start Time, Estimated End Time, Location, InitiatedBy) and others may change in the future (I.e. intimacy options) so keep that in mind when thinking DB schemas.
+- Users will interact directly with the PDF embedded in the webpage when creating or reviewing TPS reports — don't create input fields for anything
+- TPS form interactions in the app should be logged into the database
+- Either me or my partner will visit the landing page and click "New TPS Report"
+    - This will redirect the user to an instance of the PDF form to fill out
+    - Once completed to the user's satisfaction, the TPS report and the form metadata is saved to disk and an email is sent to the partner, notifying them that a new TPS report is available to review
+- Once the report is created, it appears on the FormPlay landing page as pending. At this point the creator must not be able to make any more edits to the form, only the receiver. This may require us to use Javascript to manipulate the fields on the PDF.
+    - The partner (I.e. the user who didn't create the form) reviews the form details, fills in anything extra that might be missing, and sends it back with their initials with just a few clicks in the app.
+    - The response could also be a "Not into this" denial, which should mark the form as Aborted and notify the submitter. The app should be nice about this, though — that's very important. 
+- Now the form is filled out and ready for approval. The original submitter now sees the form and can approve it with their initials, or deny it due to the extra stuff that got added, in which case it gets aborted.
+- Once the submitter adds their initials within the PDF and clicks "Add to Calendars" the hard work of initiation is done and FormPlay adds "Review TPS Reports" to both the users' calendars.
+- It is not important to know who initiated the TPS report when viewing them from the homepage
+- I would like to host this locally for intranet traffic only
+- I prefer the dotnet ecosystem over Node and npm
