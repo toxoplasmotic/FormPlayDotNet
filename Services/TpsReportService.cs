@@ -74,6 +74,13 @@ namespace FormPlay.Services
                 templateType = _configuration["PdfSettings:DefaultTemplate"];
             }
 
+            // Get the template path from configuration
+            string templatePath = _configuration[$"PdfSettings:Templates:{templateType}:Path"];
+            if (string.IsNullOrEmpty(templatePath))
+            {
+                templatePath = _configuration["PdfSettings:Templates:vanilla:Path"];
+            }
+
             var report = new TpsReport
             {
                 CreatedDate = DateTime.Now,
@@ -82,7 +89,9 @@ namespace FormPlay.Services
                 PartnerUserId = initiator.PartnerId,
                 InitiatedBy = initiator,
                 PartnerUser = partner,
-                TemplateType = templateType
+                TemplateType = templateType,
+                // Set the PDF file path to the template path initially
+                PdfFilePath = templatePath
             };
 
             _context.TpsReports.Add(report);
@@ -138,6 +147,10 @@ namespace FormPlay.Services
             
             // Extract certain key fields for easier access
             ExtractKeyFields(report, formFields);
+            
+            // Save the updated PDF file with the form fields
+            string pdfFilePath = await _pdfService.SavePdfWithFieldsAsync(report, formFields, report.TemplateType);
+            report.PdfFilePath = pdfFilePath;
             
             report.LastModifiedDate = DateTime.Now;
             
