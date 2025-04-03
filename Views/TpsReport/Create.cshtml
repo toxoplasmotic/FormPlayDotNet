@@ -1,0 +1,53 @@
+@model FormPlay.Models.ViewModels.TpsReportViewModel
+@{
+    ViewData["Title"] = "New TPS Report";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">New TPS Report</li>
+            </ol>
+        </nav>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">New TPS Report</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    You're creating a new TPS Report. Fill out the form below and submit it when you're ready.
+                </p>
+                
+                <div id="pdf-container" class="pdf-container" 
+                     data-report-id="@Model.Id" 
+                     data-user-id="@ViewBag.CurrentUserId" 
+                     data-pdf-url="@Model.PdfUrl" 
+                     data-readonly="false">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading TPS Report form...</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <form asp-controller="TpsReport" asp-action="SubmitForReview" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="userId" value="@ViewBag.CurrentUserId" />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit for Review
+                        </button>
+                    </form>
+                    
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
