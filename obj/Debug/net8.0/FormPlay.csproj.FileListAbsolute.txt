@@ -37,3 +37,4 @@
 /home/runner/workspace/obj/Debug/net8.0/FormPlay.pdb
 /home/runner/workspace/obj/Debug/net8.0/FormPlay.genruntimeconfig.cache
 /home/runner/workspace/obj/Debug/net8.0/ref/FormPlay.dll
+/home/runner/workspace/obj/Debug/net8.0/FormPlay.sourcelink.json

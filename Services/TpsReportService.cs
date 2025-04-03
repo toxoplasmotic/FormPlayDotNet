@@ -11,6 +11,7 @@ namespace FormPlay.Services
         private readonly PdfService _pdfService;
         private readonly EmailService _emailService;
         private readonly CalendarService _calendarService;
+        private readonly IConfiguration _configuration;
         private readonly ILogger<TpsReportService> _logger;
 
         public TpsReportService(
@@ -18,12 +19,14 @@ namespace FormPlay.Services
             PdfService pdfService,
             EmailService emailService,
             CalendarService calendarService,
+            IConfiguration configuration,
             ILogger<TpsReportService> logger)
         {
             _context = context;
             _pdfService = pdfService;
             _emailService = emailService;
             _calendarService = calendarService;
+            _configuration = configuration;
             _logger = logger;
         }
 
