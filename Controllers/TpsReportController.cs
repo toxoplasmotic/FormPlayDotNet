@@ -48,9 +48,9 @@ namespace FormPlay.Controllers
             return View(report);
         }
 
-        public async Task<IActionResult> Create(int userId = 1)
+        public async Task<IActionResult> Create(int userId = 1, string templateType = null)
         {
-            var report = await _tpsReportService.CreateNewTpsReportAsync(userId);
+            var report = await _tpsReportService.CreateNewTpsReportAsync(userId, templateType);
             
             // For now, redirect to the report details page
             return RedirectToAction("Details", new { id = report.Id, userId });

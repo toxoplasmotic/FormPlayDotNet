@@ -55,7 +55,7 @@ namespace FormPlay.Services
             return MapToViewModel(report, currentUserId);
         }
 
-        public async Task<TpsReport> CreateNewTpsReportAsync(int initiatorId)
+        public async Task<TpsReport> CreateNewTpsReportAsync(int initiatorId, string templateType = null)
         {
             var initiator = await _context.Users.FindAsync(initiatorId);
             if (initiator == null)
@@ -65,6 +65,12 @@ namespace FormPlay.Services
             if (partner == null)
                 throw new ArgumentException("Partner not found");
 
+            // If no template type is specified, use the default from configuration
+            if (string.IsNullOrEmpty(templateType))
+            {
+                templateType = _configuration["PdfSettings:DefaultTemplate"];
+            }
+
             var report = new TpsReport
             {
                 CreatedDate = DateTime.Now,
@@ -72,7 +78,8 @@ namespace FormPlay.Services
                 InitiatedById = initiatorId,
                 PartnerUserId = initiator.PartnerId,
                 InitiatedBy = initiator,
-                PartnerUser = partner
+                PartnerUser = partner,
+                TemplateType = templateType
             };
 
             _context.TpsReports.Add(report);

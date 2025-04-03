@@ -20,10 +20,59 @@ namespace FormPlay.Services
             _logger = logger;
         }
 
-        public string GetPdfTemplatePath()
+        public string GetPdfTemplatePath(string templateName = null)
         {
-            var templatePath = _configuration["PdfSettings:TemplatePath"];
+            // If no template name is specified, use the default template
+            if (string.IsNullOrEmpty(templateName))
+            {
+                templateName = _configuration["PdfSettings:DefaultTemplate"];
+            }
+            
+            // Get the template path from configuration
+            var templatePath = _configuration[$"PdfSettings:Templates:{templateName}:Path"];
+            
+            if (string.IsNullOrEmpty(templatePath))
+            {
+                _logger.LogWarning($"Template path not found for template '{templateName}'. Falling back to vanilla template.");
+                templatePath = _configuration["PdfSettings:Templates:vanilla:Path"];
+            }
+            
             return Path.Combine(_environment.ContentRootPath, templatePath);
+        }
+        
+        public List<TemplateInfo> GetAvailableTemplates()
+        {
+            var templates = new List<TemplateInfo>();
+            var templatesSection = _configuration.GetSection("PdfSettings:Templates");
+            
+            if (templatesSection != null)
+            {
+                foreach (var child in templatesSection.GetChildren())
+                {
+                    var name = child.Key;
+                    var displayName = child["Name"] ?? name;
+                    var description = child["Description"] ?? "";
+                    var path = child["Path"] ?? "";
+                    
+                    templates.Add(new TemplateInfo
+                    {
+                        Name = name,
+                        DisplayName = displayName,
+                        Description = description,
+                        Path = path
+                    });
+                }
+            }
+            
+            return templates;
+        }
+        
+        public class TemplateInfo
+        {
+            public string Name { get; set; }
+            public string DisplayName { get; set; }
+            public string Description { get; set; }
+            public string Path { get; set; }
         }
 
         public async Task<Dictionary<string, string>> ExtractPdfFormFieldsAsync(Stream pdfStream)
@@ -55,7 +104,7 @@ namespace FormPlay.Services
             return fields;
         }
 
-        public async Task<string> SavePdfWithFieldsAsync(TpsReport report, Dictionary<string, string> formFields)
+        public async Task<string> SavePdfWithFieldsAsync(TpsReport report, Dictionary<string, string> formFields, string templateName = null)
         {
             string savePath = _configuration["PdfSettings:SavePath"];
             string directoryPath = Path.Combine(_environment.WebRootPath, savePath);
@@ -71,8 +120,17 @@ namespace FormPlay.Services
             
             try
             {
-                // Copy the template and fill in the fields
-                string templatePath = GetPdfTemplatePath();
+                // Use the specified template or try to get it from the report's TemplateType field if it exists
+                string template = templateName;
+                if (string.IsNullOrEmpty(template) && !string.IsNullOrEmpty(report.TemplateType))
+                {
+                    template = report.TemplateType;
+                }
+                
+                // Get the template path (uses default if none specified)
+                string templatePath = GetPdfTemplatePath(template);
+                
+                _logger.LogInformation($"Using template '{template ?? "default"}' at path: {templatePath}");
                 
                 using (var reader = new PdfReader(templatePath))
                 {

@@ -25,6 +25,9 @@ namespace FormPlay.Models
         
         public string? PdfFilePath { get; set; }
         
+        // The type of template that was used for this report (e.g., 'vanilla', 'custom1', etc.)
+        public string? TemplateType { get; set; }
+        
         public DateTime? ScheduledDate { get; set; }
         
         public TimeSpan? ScheduledStartTime { get; set; }

@@ -32,6 +32,9 @@ namespace FormPlay.Models.ViewModels
         
         public string? PdfUrl { get; set; }
         
+        // The type of template that was used for this report
+        public string? TemplateType { get; set; }
+        
         public DateTime CreatedDate { get; set; }
         
         public bool MattsInitialsProvided => !string.IsNullOrEmpty(MattsInitials);
