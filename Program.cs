@@ -36,7 +36,8 @@ using (var scope = app.Services.CreateScope())
     DatabaseInitializer.Initialize(dbContext);
 }
 
-app.UseHttpsRedirection();
+// Remove HTTPS redirection in Replit environment to avoid port binding issues
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -47,5 +48,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Ensure the app listens on the correct IP and port for intranet access
+// Ensure the app listens on the correct IP and port for Replit
+// Hard-code to port 5000 for Replit compatibility
 app.Run("http://0.0.0.0:5000");

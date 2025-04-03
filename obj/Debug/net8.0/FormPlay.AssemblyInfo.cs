@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FormPlay")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20a2262fc4eb50cc81dd7c5390e9fb7be6ea465d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+871289184a3a30df7b7fc0abe8b8becf0063c1a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("FormPlay")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FormPlay")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
