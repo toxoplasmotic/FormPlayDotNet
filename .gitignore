@@ -121,3 +121,6 @@ launchSettings.json
 .replit.backup
 .breakpoints
 replit.nix
+
+# Mac
+.DS_Store
